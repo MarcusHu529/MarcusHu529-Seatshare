@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/menuTitle"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="@string/brody_menu"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="#18453B"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Back Button -->
+
+    <!-- Content area -->
+
+    <FrameLayout
+        android:id="@+id/menuContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/menuTitle"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:padding="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBack"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="#18453B"
+                android:text="@string/back"
+                android:textColor="@android:color/white"
+                android:textSize="9sp" />
+
+            <Button
+                android:id="@+id/btnSeating"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="#18453B"
+                android:text="@string/seating_options"
+                android:textColor="@android:color/white"
+                android:textSize="9sp" />
+
+            <Button
+                android:id="@+id/btnDirections"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="#18453B"
+                android:text="@string/directions"
+                android:textColor="@android:color/white"
+                android:textSize="9sp" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Permanent Bottom Bar -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="#18453B"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Breakfast Button -->
+        <TextView
+            android:id="@+id/btnBreakfast"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/breakfast"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Lunch Button -->
+        <TextView
+            android:id="@+id/btnLunch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/lunch"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Dinner Button -->
+        <TextView
+            android:id="@+id/btnDinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/dinner"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

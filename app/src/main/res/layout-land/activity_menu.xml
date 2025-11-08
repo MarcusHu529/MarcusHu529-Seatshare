@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/menuTitle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="Brody Menu"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="#18453B"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Content area with side-by-side layout for landscape -->
+    <LinearLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/menuTitle"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar">
+
+        <!-- Left side - Action buttons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Action buttons container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Actions"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#18453B"
+                    android:layout_marginBottom="8dp" />
+
+                <Button
+                    android:id="@+id/btnBack"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="#18453B"
+                    android:text="Back"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btnSeating"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="#18453B"
+                    android:text="Seating Options"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btnDirections"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:backgroundTint="#18453B"
+                    android:text="Directions"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Right side - Menu content -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMenu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Bar - Meal selection -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="#18453B"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Breakfast Button -->
+        <TextView
+            android:id="@+id/btnBreakfast"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Breakfast"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Lunch Button -->
+        <TextView
+            android:id="@+id/btnLunch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Lunch"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <!-- Dinner Button -->
+        <TextView
+            android:id="@+id/btnDinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Dinner"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#18453B">
+
+    <!-- Title with Logo -->
+    <LinearLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvSpartys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPARTY'S"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgSpartanLogo"
+            android:layout_width="80dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Spartan Logo"
+            android:src="@drawable/spartan_logo" />
+
+        <TextView
+            android:id="@+id/tvSpreads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPREADS"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Grid of Dining Halls -->
+
+    <GridLayout
+        android:id="@+id/diningHallGrid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:columnCount="2"
+        android:rowCount="4"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+
+        <!-- Brody -->
+        <FrameLayout
+            android:id="@+id/boxBrody"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgBrody"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/brody"
+                android:contentDescription="Brody Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtBrody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/brody"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Case -->
+        <FrameLayout
+            android:id="@+id/boxCase"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgCase"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/casehall"
+                android:contentDescription="Case Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtCase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/case_hall"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Owen -->
+        <FrameLayout
+            android:id="@+id/boxOwen"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgOwen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/owen"
+                android:contentDescription="Owen Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtOwen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/owen"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Shaw -->
+        <FrameLayout
+            android:id="@+id/boxShaw"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgShaw"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/shaw"
+                android:contentDescription="Shaw Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtShaw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/shaw"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Akers -->
+        <FrameLayout
+            android:id="@+id/boxAkers"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgAkers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/akers"
+                android:contentDescription="Akers Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtAkers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/akers"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Landon -->
+        <FrameLayout
+            android:id="@+id/boxLandon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgLandon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/landon"
+                android:contentDescription="Landon Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtLandon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/landon"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Holden -->
+        <FrameLayout
+            android:id="@+id/boxHolden"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgHolden"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/holden"
+                android:contentDescription="Holden Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtHolden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/holden"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Hubbard -->
+        <FrameLayout
+            android:id="@+id/boxHubbard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgHubbard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/hubbard"
+                android:contentDescription="Hubbard Dining Hall" />
+
+            <TextView
+                android:id="@+id/txtHubbard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/hubbard"
+                android:textColor="#18453B"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+    </GridLayout>
+
+    <!-- Login Button at Bottom -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#B3FFFFFF"
+        android:text="@string/login"
+        android:textColor="#18453B"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        style="@style/Widget.MaterialComponents.Button"
+        app:cornerRadius="16dp"
+        app:strokeColor="#18453B"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

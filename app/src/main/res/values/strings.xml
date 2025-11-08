@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- Main App -->
+    <string name="spartys_spreads">SPARTY\'S SPREADS</string>
+
+    <!-- Dining Halls -->
+    <string name="brody">Brody</string>
+    <string name="case_hall">Case</string>
+    <string name="owen">Owen</string>
+    <string name="shaw">Shaw</string>
+    <string name="akers">Akers</string>
+    <string name="landon">Landon</string>
+    <string name="holden">Holden</string>
+    <string name="hubbard">Hubbard</string>
+
+    <!-- Menu -->
+    <string name="brody_menu">Brody Menu</string>
+    <string name="actions">Actions</string>
+    <string name="back">Back</string>
+    <string name="seating">Seating</string>
+    <string name="directions">Directions</string>
+    <string name="seating_options">Seating Options</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+
+    <!-- Menu Detail -->
+    <string name="food_item_name">Food Item Name</string>
+    <string name="category">Category</string>
+    <string name="price_default">$0.00</string>
+    <string name="food_description">Food description</string>
+    <string name="nutrition_information">Nutrition Information</string>
+    <string name="calories">Calories</string>
+    <string name="fat">Fat</string>
+    <string name="protein">Protein</string>
+    <string name="carbohydrates">Carbohydrates</string>
+    <string name="fiber">Fiber</string>
+    <string name="sugar">Sugar</string>
+    <string name="allergens">Allergens</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="allergens_none">None</string>
+    <string name="ingredients_none">No ingredients listed</string>
+    <string name="nutrition_value_zero">0</string>
+    <string name="nutrition_value_zero_grams">0g</string>
+
+    <!-- Login and Authentication -->
+    <string name="login">Login</string>
+    <string name="welcome_user">Welcome, %1$s!</string>
+    <string name="login_title">Welcome to Sparty\'s Spreads</string>
+    <string name="create_account">Create Account</string>
+    <string name="login_msu_id">Login with MSU ID</string>
+    <string name="login_google">Login with Google</string>
+    <string name="msu_id">MSU ID</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or">OR</string>
+    <string name="already_have_account">Already have an account? Sign In</string>
+    <string name="need_account">Need an account? Create one</string>
+    <string name="forgot_password">Forgot Password?</string>
+</resources>
