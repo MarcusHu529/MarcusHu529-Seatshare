@@ -11,7 +11,7 @@ Sparty's Spreads provides an intuitive interface for MSU students to:
 - Access breakfast, lunch, and dinner menus
 
 ## 🏗️ Project Structure
-
+ 
 ```
 ├── app/
 │   ├── src/main/
