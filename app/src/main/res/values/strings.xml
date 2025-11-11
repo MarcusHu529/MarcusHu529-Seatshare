@@ -8,14 +8,13 @@
     <string name="spartys_spreads">SPARTY\'S SPREADS</string>
 
     <!-- Dining Halls -->
+    <string name="snyder_phillips">Snyder-Phillips</string>
     <string name="brody">Brody</string>
     <string name="case_hall">Case</string>
     <string name="owen">Owen</string>
     <string name="shaw">Shaw</string>
     <string name="akers">Akers</string>
     <string name="landon">Landon</string>
-    <string name="holden">Holden</string>
-    <string name="hubbard">Hubbard</string>
 
     <!-- Menu -->
     <string name="brody_menu">Brody Menu</string>

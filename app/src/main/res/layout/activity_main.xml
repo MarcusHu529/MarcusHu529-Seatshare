@@ -7,18 +7,22 @@
     android:background="#18453B">
 
     <!-- Title with Logo -->
+
+    <!-- Main Container for Dining Halls -->
+
     <LinearLayout
         android:id="@+id/titleLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -51,19 +55,56 @@
 
     </LinearLayout>
 
-    <!-- Grid of Dining Halls -->
-
-    <GridLayout
-        android:id="@+id/diningHallGrid"
+    <LinearLayout
+        android:id="@+id/diningHallContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
-        android:columnCount="2"
-        android:rowCount="4"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+
+        <!-- Top Featured Dining Hall (Full Width) -->
+        <FrameLayout
+            android:id="@+id/boxSnyderPhillips"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_corners"
+            android:clipToOutline="true">
+
+            <ImageView
+                android:id="@+id/imgSnyderPhillips"
+                android:layout_width="match_parent"
+                android:layout_height="243dp"
+                android:contentDescription="Snyder-Phillips Hall"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sny_phi" />
+
+            <TextView
+                android:id="@+id/txtSnyderPhillips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#80FFFFFF"
+                android:gravity="center"
+                android:text="@string/snyder_phillips"
+                android:textColor="#18453B"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- Grid Layout for Remaining 6 Dining Halls -->
+        <GridLayout
+            android:id="@+id/diningHallGrid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:columnCount="2"
+            android:rowCount="3">
 
         <!-- Brody -->
         <FrameLayout
@@ -257,71 +298,9 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
-        <!-- Holden -->
-        <FrameLayout
-            android:id="@+id/boxHolden"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+        </GridLayout>
 
-            <ImageView
-                android:id="@+id/imgHolden"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/holden"
-                android:contentDescription="Holden Dining Hall" />
-
-            <TextView
-                android:id="@+id/txtHolden"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="@string/holden"
-                android:textColor="#18453B"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-        <!-- Hubbard -->
-        <FrameLayout
-            android:id="@+id/boxHubbard"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
-
-            <ImageView
-                android:id="@+id/imgHubbard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/hubbard"
-                android:contentDescription="Hubbard Dining Hall" />
-
-            <TextView
-                android:id="@+id/txtHubbard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="@string/hubbard"
-                android:textColor="#18453B"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-    </GridLayout>
+    </LinearLayout>
 
     <!-- Login Button at Bottom -->
     <Button

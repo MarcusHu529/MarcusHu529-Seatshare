@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class MenuActivity extends AppCompatActivity {
     private String currentMealTime = "Breakfast";
     private Map<String, String> hallAddresses;
     private MenuDatabaseHelper dbHelper;
+    private MenuUpdateService menuUpdateService;
+    private boolean isLoadingMenu = false;
 
     // Constants
     private static final String KEY_CURRENT_MEAL_TIME = "current_meal_time";
@@ -77,6 +81,9 @@ public class MenuActivity extends AppCompatActivity {
 
         // Load menu data for current meal time
         loadMenuForMealTime(currentMealTime);
+
+        // Fetch latest menu data in background
+        fetchLatestMenuData();
     }
 
     /**
@@ -105,6 +112,30 @@ public class MenuActivity extends AppCompatActivity {
      */
     private void initializeDatabase() {
         dbHelper = MenuDatabaseHelper.getInstance(this);
+
+        // Initialize menu update service
+        menuUpdateService = new MenuUpdateService(this);
+        menuUpdateService.setMenuUpdateListener(new MenuUpdateService.MenuUpdateListener() {
+            @Override
+            public void onMenuUpdated(String updatedHallName, boolean success, String message) {
+                if (updatedHallName.equals(hallName)) {
+                    runOnUiThread(() -> {
+                        isLoadingMenu = false;
+                        if (success) {
+                            loadMenuForMealTime(currentMealTime);
+                            Toast.makeText(MenuActivity.this, "Menu updated from MSU", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MenuActivity.this, "Using cached menu data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAllMenusUpdated() {
+                // Not used in this activity
+            }
+        });
     }
 
     /**
@@ -261,8 +292,25 @@ public class MenuActivity extends AppCompatActivity {
      * @param mealTime The meal time to load (Breakfast, Lunch, or Dinner)
      */
     private void loadMenuForMealTime(String mealTime) {
-        List<MenuItem> menuItems = dbHelper.getMenuItemsForHall(hallName, mealTime);
+        // Try to load dynamic menu first, fall back to static menu if not available
+        List<MenuItem> menuItems = dbHelper.getDynamicMenuItemsForHall(hallName, mealTime);
+
+        if (menuItems.isEmpty() && !isLoadingMenu) {
+            // No dynamic menu available, show a message
+            Toast.makeText(this, "Fetching live menu data...", Toast.LENGTH_SHORT).show();
+        }
+
         menuAdapter.updateMenuItems(menuItems);
+    }
+
+    /**
+     * Fetches the latest menu data from MSU website
+     */
+    private void fetchLatestMenuData() {
+        if (!isLoadingMenu) {
+            isLoadingMenu = true;
+            menuUpdateService.updateMenuForHall(hallName, false);
+        }
     }
 
     /**

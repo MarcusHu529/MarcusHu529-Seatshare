@@ -51,278 +51,266 @@
 
     </LinearLayout>
 
-    <!-- Grid of Dining Halls - Landscape optimized -->
-    <GridLayout
-        android:id="@+id/diningHallGrid"
+    <!-- Main Container for Dining Halls - Horizontal Layout -->
+    <LinearLayout
+        android:id="@+id/diningHallContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:columnCount="4"
-        android:rowCount="2"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleLayout">
 
-        <!-- Brody -->
+        <!-- Left: Featured Dining Hall (Large Tile) -->
         <FrameLayout
-            android:id="@+id/boxBrody"
+            android:id="@+id/boxSnyderPhillips"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
             android:layout_margin="4dp"
             android:background="@drawable/rounded_corners"
             android:clipToOutline="true">
 
             <ImageView
-                android:id="@+id/imgBrody"
+                android:id="@+id/imgSnyderPhillips"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/brody" />
+                android:src="@drawable/sny_phi"
+                android:contentDescription="Snyder-Phillips Hall" />
 
             <TextView
-                android:id="@+id/txtBrody"
+                android:id="@+id/txtSnyderPhillips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="#80FFFFFF"
                 android:gravity="center"
-                android:text="Brody"
+                android:text="@string/snyder_phillips"
                 android:textColor="#18453B"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </FrameLayout>
 
-        <!-- Case -->
-        <FrameLayout
-            android:id="@+id/boxCase"
+        <!-- Right: Grid Layout for Remaining 6 Dining Halls -->
+        <GridLayout
+            android:id="@+id/diningHallGrid"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:columnCount="2"
+            android:rowCount="3">
 
-            <ImageView
-                android:id="@+id/imgCase"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/casehall" />
+            <!-- Brody -->
+            <FrameLayout
+                android:id="@+id/boxBrody"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtCase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Case"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgBrody"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/brody"
+                    android:contentDescription="Brody Dining Hall" />
 
-        <!-- Owen -->
-        <FrameLayout
-            android:id="@+id/boxOwen"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtBrody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/brody"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgOwen"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/owen" />
+            <!-- Case -->
+            <FrameLayout
+                android:id="@+id/boxCase"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtOwen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Owen"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgCase"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/casehall"
+                    android:contentDescription="Case Dining Hall" />
 
-        <!-- Shaw -->
-        <FrameLayout
-            android:id="@+id/boxShaw"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtCase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/case_hall"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgShaw"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/shaw" />
+            <!-- Owen -->
+            <FrameLayout
+                android:id="@+id/boxOwen"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtShaw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Shaw"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgOwen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/owen"
+                    android:contentDescription="Owen Dining Hall" />
 
-        <!-- Akers -->
-        <FrameLayout
-            android:id="@+id/boxAkers"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtOwen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/owen"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgAkers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/akers" />
+            <!-- Shaw -->
+            <FrameLayout
+                android:id="@+id/boxShaw"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtAkers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Akers"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgShaw"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/shaw"
+                    android:contentDescription="Shaw Dining Hall" />
 
-        <!-- Landon -->
-        <FrameLayout
-            android:id="@+id/boxLandon"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtShaw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/shaw"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgLandon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/landon" />
+            <!-- Akers -->
+            <FrameLayout
+                android:id="@+id/boxAkers"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtLandon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Landon"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgAkers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/akers"
+                    android:contentDescription="Akers Dining Hall" />
 
-        <!-- Holden -->
-        <FrameLayout
-            android:id="@+id/boxHolden"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtAkers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/akers"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgHolden"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/holden" />
+            <!-- Landon -->
+            <FrameLayout
+                android:id="@+id/boxLandon"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_corners"
+                android:clipToOutline="true">
 
-            <TextView
-                android:id="@+id/txtHolden"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Holden"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/imgLandon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/landon"
+                    android:contentDescription="Landon Dining Hall" />
 
-        <!-- Hubbard -->
-        <FrameLayout
-            android:id="@+id/boxHubbard"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="4dp"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true">
+                <TextView
+                    android:id="@+id/txtLandon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#80FFFFFF"
+                    android:gravity="center"
+                    android:text="@string/landon"
+                    android:textColor="#18453B"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/imgHubbard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/hubbard" />
+        </GridLayout>
 
-            <TextView
-                android:id="@+id/txtHubbard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="#80FFFFFF"
-                android:gravity="center"
-                android:text="Hubbard"
-                android:textColor="#18453B"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-    </GridLayout>
+    </LinearLayout>
 
     <!-- Login Button at Bottom -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="#B3FFFFFF"
         android:text="@string/login"
         android:textColor="#18453B"

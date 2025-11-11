@@ -26,7 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
  * - Launched from MainActivity login button
  * - Returns to MainActivity after successful authentication
  */
-public class LoginActivity extends AppCompatActivity {
+public class
+LoginActivity extends AppCompatActivity {
 
     // UI Components
     private Button btnCreateAccount;
@@ -39,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String KEY_USER_LOGGED_IN = "user_logged_in";
     private static final String KEY_USER_NAME = "user_name";
 
+    // Firebase
+    private FirebaseManager firebaseManager;
+
     /**
      * Initializes the login activity and sets up authentication options
      */
@@ -46,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Initialize Firebase
+        firebaseManager = FirebaseManager.getInstance();
 
         // Initialize UI components
         initializeViews();
@@ -117,6 +124,17 @@ public class LoginActivity extends AppCompatActivity {
      * @param userName The name of the authenticated user
      */
     private void simulateSuccessfulLogin(String userName) {
+        // Determine login method based on userName
+        String method = "unknown";
+        if (userName.contains("New User")) method = "create_account";
+        else if (userName.contains("MSU")) method = "msu_id";
+        else if (userName.contains("Google")) method = "google";
+
+        // Log login analytics
+        if (firebaseManager != null) {
+            firebaseManager.logUserLogin(method);
+        }
+
         // Save user session
         saveUserSession(userName);
 

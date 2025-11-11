@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MenuDatabaseHelper - SQLite database manager for Sparty's Spreads menu data
@@ -33,7 +35,7 @@ public class MenuDatabaseHelper extends SQLiteOpenHelper {
 
     // Database Configuration
     private static final String DATABASE_NAME = "MenuDatabase.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // MenuItems Table Schema
     private static final String TABLE_MENU_ITEMS = "menu_items";
@@ -57,6 +59,12 @@ public class MenuDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HALL_NAME = "hall_name";
     private static final String COLUMN_MEAL_TIME = "meal_time";
     private static final String COLUMN_MENU_ITEM_ID = "menu_item_id";
+
+    // Dynamic Menu Table Schema
+    private static final String TABLE_DYNAMIC_MENUS = "dynamic_menus";
+    private static final String COLUMN_STATION_NAME = "station_name";
+    private static final String COLUMN_ITEM_NAME = "item_name";
+    private static final String COLUMN_DATE_FETCHED = "date_fetched";
 
     // Singleton instance
     private static MenuDatabaseHelper instance;
@@ -115,15 +123,35 @@ public class MenuDatabaseHelper extends SQLiteOpenHelper {
                 ")";
         db.execSQL(createHallMenusTable);
 
+        // Create Dynamic Menus table
+        String createDynamicMenusTable = "CREATE TABLE " + TABLE_DYNAMIC_MENUS + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_HALL_NAME + " TEXT, " +
+                COLUMN_MEAL_TIME + " TEXT, " +
+                COLUMN_STATION_NAME + " TEXT, " +
+                COLUMN_ITEM_NAME + " TEXT, " +
+                COLUMN_DATE_FETCHED + " INTEGER" +
+                ")";
+        db.execSQL(createDynamicMenusTable);
+
         // Populate with sample data
         populateSampleData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HALL_MENUS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MENU_ITEMS);
-        onCreate(db);
+        if (oldVersion < 2) {
+            // Add dynamic menus table in version 2
+            String createDynamicMenusTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DYNAMIC_MENUS + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_HALL_NAME + " TEXT, " +
+                    COLUMN_MEAL_TIME + " TEXT, " +
+                    COLUMN_STATION_NAME + " TEXT, " +
+                    COLUMN_ITEM_NAME + " TEXT, " +
+                    COLUMN_DATE_FETCHED + " INTEGER" +
+                    ")";
+            db.execSQL(createDynamicMenusTable);
+        }
     }
 
     private void populateSampleData(SQLiteDatabase db) {
@@ -172,7 +200,7 @@ public class MenuDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void populateHallMenus(SQLiteDatabase db) {
-        String[] halls = {"Brody", "Case", "Owen", "Shaw", "Akers", "Landon", "Holden", "Hubbard"};
+        String[] halls = {"Snyder-Phillips", "Brody", "Case", "Owen", "Shaw", "Akers", "Landon"};
 
         // Breakfast items (IDs 1-4 + specialty items)
         for (String hall : halls) {
@@ -265,5 +293,110 @@ public class MenuDatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
         return item;
+    }
+
+    public void updateDynamicMenu(String hallName, MSUMenuScraper.MenuResult menuResult) {
+        if (!menuResult.success || menuResult.stations == null) {
+            return;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String deleteQuery = "DELETE FROM " + TABLE_DYNAMIC_MENUS +
+                               " WHERE " + COLUMN_HALL_NAME + " = ? AND date(" + COLUMN_DATE_FETCHED + "/1000, 'unixepoch') = date('now')";
+            db.execSQL(deleteQuery, new String[]{hallName});
+
+            long currentTime = System.currentTimeMillis();
+
+            for (MSUMenuScraper.Station station : menuResult.stations) {
+                for (MSUMenuScraper.Meal meal : station.meals) {
+                    for (String item : meal.items) {
+                        ContentValues values = new ContentValues();
+                        values.put(COLUMN_HALL_NAME, hallName);
+                        values.put(COLUMN_MEAL_TIME, meal.mealName);
+                        values.put(COLUMN_STATION_NAME, station.stationName);
+                        values.put(COLUMN_ITEM_NAME, item);
+                        values.put(COLUMN_DATE_FETCHED, currentTime);
+                        db.insert(TABLE_DYNAMIC_MENUS, null, values);
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public List<MenuItem> getDynamicMenuItemsForHall(String hallName, String mealTime) {
+        List<MenuItem> menuItems = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT DISTINCT " + COLUMN_ITEM_NAME + ", " + COLUMN_STATION_NAME +
+                      " FROM " + TABLE_DYNAMIC_MENUS +
+                      " WHERE " + COLUMN_HALL_NAME + " = ? AND " + COLUMN_MEAL_TIME + " = ?" +
+                      " AND date(" + COLUMN_DATE_FETCHED + "/1000, 'unixepoch') = date('now')" +
+                      " ORDER BY " + COLUMN_STATION_NAME + ", " + COLUMN_ITEM_NAME;
+
+        Cursor cursor = db.rawQuery(query, new String[]{hallName, mealTime});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(0);
+                String station = cursor.getString(1);
+                menuItems.add(new MenuItem(name, "Fresh from " + station, station));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        if (menuItems.isEmpty()) {
+            return getMenuItemsForHall(hallName, mealTime);
+        }
+
+        return menuItems;
+    }
+
+    public Map<String, List<String>> getStationMenuItemsForHall(String hallName, String mealTime) {
+        Map<String, List<String>> stationItems = new HashMap<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_STATION_NAME + ", " + COLUMN_ITEM_NAME +
+                      " FROM " + TABLE_DYNAMIC_MENUS +
+                      " WHERE " + COLUMN_HALL_NAME + " = ? AND " + COLUMN_MEAL_TIME + " = ?" +
+                      " AND date(" + COLUMN_DATE_FETCHED + "/1000, 'unixepoch') = date('now')" +
+                      " ORDER BY " + COLUMN_STATION_NAME + ", " + COLUMN_ITEM_NAME;
+
+        Cursor cursor = db.rawQuery(query, new String[]{hallName, mealTime});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String stationName = cursor.getString(0);
+                String itemName = cursor.getString(1);
+
+                if (!stationItems.containsKey(stationName)) {
+                    stationItems.put(stationName, new ArrayList<>());
+                }
+                stationItems.get(stationName).add(itemName);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return stationItems;
+    }
+
+    public boolean hasDynamicMenuForToday(String hallName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM " + TABLE_DYNAMIC_MENUS +
+                      " WHERE " + COLUMN_HALL_NAME + " = ?" +
+                      " AND date(" + COLUMN_DATE_FETCHED + "/1000, 'unixepoch') = date('now')";
+
+        Cursor cursor = db.rawQuery(query, new String[]{hallName});
+        boolean hasData = false;
+        if (cursor.moveToFirst()) {
+            hasData = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+        return hasData;
     }
 }
