@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-
+import androidx.core.content.ContextCompat;
 /**
  * Handles new user/account creation
  */
@@ -105,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
         TextView back = new TextView(this);
         back.setId(View.generateViewId());
         back.setText(label);
-        back.setTextColor(getResources().getColor(android.R.color.white));
+        back.setTextColor(ContextCompat.getColor(this, android.R.color.white));
         back.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         back.setTypeface(back.getTypeface(), android.graphics.Typeface.BOLD);
         back.setClickable(true);
