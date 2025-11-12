@@ -64,4 +64,23 @@
     <string name="already_have_account">Already have an account? Sign In</string>
     <string name="need_account">Need an account? Create one</string>
     <string name="forgot_password">Forgot Password?</string>
+
+    <string name="login_email">Sign In with Email</string>
+    <string name="name">Name</string>
+    <string name="account">Account</string>
+    <string name="save">Save</string>
+    <string name="logout">Log out</string>
+    <string name="update_name">Update Name</string>
+    <string name="update_email">Update Email</string>
+    <string name="update_password">Update Password</string>
+    <string name="reauth_password_prompt">Enter current password</string>
+    <string name="error_empty_fields">Please fill in all fields</string>
+    <string name="error_password_mismatch">Passwords don’t match</string>
+    <string name="msg_profile_updated">Profile updated</string>
+    <string name="msu_email_required">Please use your MSU email (@msu.edu)</string>
+    <string name="sign_up_success">Account created! Check your MSU email to verify.</string>
+    <string name="email_not_verified">Email not verified yet. Check your inbox.</string>
+    <string name="invalid_email_password">Invalid email or password.</string>
+    <string name="current_password">Current Password Required</string>
+    <string name="default_web_client_id">seatshare-eefd3.apps.googleusercontent.com</string>
 </resources>

@@ -24,6 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 // Firebase imports
 import android.os.Bundle;
@@ -355,30 +358,35 @@ public class MainActivity extends AppCompatActivity {
      * Navigates to LoginActivity if not logged in, or shows user info if logged in
      */
     private void onLoginButtonClick() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isLoggedIn = prefs.getBoolean(KEY_USER_LOGGED_IN, false);
-
-        if (!isLoggedIn) {
-            // Navigate to LoginActivity
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+        if (u == null) {
+            startActivity(new Intent(this, LoginActivity.class));
         } else {
-            // User is logged in - could show profile or logout options
-            // For now, just logout
-            logoutUser();
+            startActivity(new Intent(this, AccountActivity.class));
         }
+    }
+
+    /**
+     * Login Button change to "Welcome, <user>!" helper (retrieves name)
+     */
+    private String deriveNameFromEmail(String email) {
+        if (email == null || email.trim().isEmpty()) return "User";
+        int at = email.indexOf('@');
+        String local = at > 0 ? email.substring(0, at) : email;
+        if (local.length() == 0) return "User";
+        return local.substring(0,1).toUpperCase() + local.substring(1);
     }
 
     /**
      * Updates the login button text and appearance based on user session state
      */
     private void updateLoginButtonState() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isLoggedIn = prefs.getBoolean(KEY_USER_LOGGED_IN, false);
-
-        if (isLoggedIn) {
-            String userName = prefs.getString(KEY_USER_NAME, "User");
-            btnLogin.setText(getString(R.string.welcome_user, userName));
+        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+        if (u != null) {
+            String name = (u.getDisplayName() != null && !u.getDisplayName().trim().isEmpty())
+                    ? u.getDisplayName().trim()
+                    : deriveNameFromEmail(u.getEmail());
+            btnLogin.setText(getString(R.string.welcome_user, name));
         } else {
             btnLogin.setText(getString(R.string.login));
         }

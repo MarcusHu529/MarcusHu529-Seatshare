@@ -26,4 +26,14 @@
         android:textColor="#333333"
         android:lineSpacingExtra="2dp" />
 
+    <ImageView
+        android:id="@+id/btnFavorite"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@android:drawable/star_off"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:padding="4dp"
+        android:contentDescription="Add to favorites" />
+
 </LinearLayout>

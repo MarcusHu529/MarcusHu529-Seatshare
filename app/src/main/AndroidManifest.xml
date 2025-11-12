@@ -19,9 +19,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/seatshare"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/seatshare"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
@@ -49,6 +49,22 @@
             android:exported="false" />
         <activity
             android:name=".AdminLoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false"/>
+        <service
+            android:name="org.eclipse.paho.android.service.MqttService"
+            android:exported="false" />
+        <activity
+            android:name=".GoogleGateActivity"
             android:exported="false" />
     </application>
 
