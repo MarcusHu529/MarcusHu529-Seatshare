@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import androidx.core.content.ContextCompat;
+
 /**
  * Handles a Log In activity for both MSU and non-MSU email
  */
@@ -125,7 +125,7 @@ public class SignInActivity extends AppCompatActivity {
         TextView back = new TextView(this);
         back.setId(View.generateViewId());
         back.setText(label);
-        back.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        back.setTextColor(getResources().getColor(android.R.color.white));
         back.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         back.setTypeface(back.getTypeface(), android.graphics.Typeface.BOLD);
         back.setClickable(true);

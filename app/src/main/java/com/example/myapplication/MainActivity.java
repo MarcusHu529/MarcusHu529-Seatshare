@@ -40,7 +40,7 @@ import android.os.Bundle;
 // import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.Arrays;
 import java.util.Comparator;
-import androidx.core.content.ContextCompat;
+
 /**
  * MainActivity - Landing page for Sparty's Spreads app
  *
@@ -514,7 +514,6 @@ public class MainActivity extends AppCompatActivity {
 
             // Create location listener
             locationListener = new LocationListener() {
-                @SuppressWarnings("deprecation")
                 @Override
                 public void onLocationChanged(@NonNull android.location.Location location) {
                     try {
@@ -549,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
                         android.util.Log.e("LocationUpdate", "Error processing location change", e);
                     }
                 }
-                @SuppressWarnings("deprecation")
+
                 @Override
                 public void onStatusChanged(String provider, int status, android.os.Bundle extras) {
                     android.util.Log.d("LocationUpdate", "Provider status changed: " + provider + " status: " + status);
@@ -1262,7 +1261,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Create location listener
         locationListener = new LocationListener() {
-            @SuppressWarnings("deprecation")
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 double newLatitude = location.getLatitude();
@@ -1283,7 +1281,7 @@ public class MainActivity extends AppCompatActivity {
                     reorganizeTilesByDistanceSafely(newLatitude, newLongitude);
                 }
             }
-            @SuppressWarnings("deprecation")
+
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {}
 

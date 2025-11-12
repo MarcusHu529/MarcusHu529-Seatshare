@@ -3,34 +3,27 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 public class ImprovedMenuActivity extends AppCompatActivity {
 
@@ -50,16 +43,13 @@ public class ImprovedMenuActivity extends AppCompatActivity {
     private String hallName;
     private String currentMealTime = "Breakfast";
     private Date selectedDate;
+    private DiningHallMenu diningHallMenu;
     private MenuUpdateService menuUpdateService;
     private Map<String, String> hallAddresses;
     private boolean isLoadingMenu = false;
 
-    // This Set will hold the names of the user's favorite items
-    private Set<String> userFavorites = new HashSet<>();
-
     // Firebase
     private FirebaseManager firebaseManager;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +58,12 @@ public class ImprovedMenuActivity extends AppCompatActivity {
 
         // Initialize Firebase
         firebaseManager = FirebaseManager.getInstance();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser(); // Get current user
 
         extractHallNameFromIntent();
         initializeHallAddresses();
         initializeViews();
         setupTabLayout();
-        setupRecyclerView(); // This just creates the adapter
+        setupRecyclerView();
         setupClickListeners();
         initializeServices();
 
@@ -83,38 +72,8 @@ public class ImprovedMenuActivity extends AppCompatActivity {
         updateDateButtonText();
         updateMenuDateDisplay();
 
-        // Fetch favorites first, and *then* load the menu.
-        if (currentUser != null) {
-            fetchUserFavorites(currentUser.getUid());
-        } else {
-            // No user logged in, just load the menu with no favorites
-            loadMenuForMealTime(currentMealTime);
-            fetchLatestMenuData();
-        }
-    }
-
-    /**
-     * Fetches the user's list of favorite item names from Firestore.
-     * On completion, it passes the list to the adapter and then loads the menu.
-     */
-    private void fetchUserFavorites(String uid) {
-        FirebaseFirestore.getInstance().collection("users").document(uid).collection("favorites")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Add the item name (which is the document ID) to our Set
-                            userFavorites.add(document.getId());
-                        }
-                    }
-
-                    // Now that we have favorites, pass them to the adapter
-                    stationAdapter.setFavorites(userFavorites);
-
-                    // Now we can safely load the menu
-                    loadMenuForMealTime(currentMealTime);
-                    fetchLatestMenuData();
-                });
+        loadMenuForMealTime(currentMealTime);
+        fetchLatestMenuData();
     }
 
     private void extractHallNameFromIntent() {
@@ -187,19 +146,20 @@ public class ImprovedMenuActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        // --- UPDATED ---
-        // Pass the activity context to the adapter.
-        // It's needed by the child adapter to show Toasts.
-        stationAdapter = new MenuStationAdapter(this);
+        stationAdapter = new MenuStationAdapter();
         recyclerViewStations.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewStations.setAdapter(stationAdapter);
     }
 
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> finish());
+
         btnSelectDate.setOnClickListener(v -> showDatePicker());
+
         btnDirections.setOnClickListener(v -> openDirections());
+
         btnSeating.setOnClickListener(v -> showSeatingOptions());
+
         fabExpandCollapse.setOnClickListener(v -> {
             stationAdapter.toggleExpandAll();
             updateFabIcon();
@@ -224,25 +184,26 @@ public class ImprovedMenuActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         isLoadingMenu = false;
                         if (success) {
-                            // database to show the new data.
                             loadMenuForMealTime(currentMealTime);
-
                             Toast.makeText(ImprovedMenuActivity.this,
-                                    "Menu updated from MSU", Toast.LENGTH_SHORT).show();
+                                         "Menu updated from MSU", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ImprovedMenuActivity.this,
-                                    "Using cached menu data", Toast.LENGTH_SHORT).show();
+                                         "Using cached menu data", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
 
             @Override
-            public void onAllMenusUpdated() {}
+            public void onAllMenusUpdated() {
+                // Not used in this activity
+            }
         });
     }
 
     private void loadMenuForMealTime(String mealTime) {
+        // Fetch from database
         MenuDatabaseHelper dbHelper = MenuDatabaseHelper.getInstance(this);
         List<MenuStation> stations = getStationsFromDatabase(dbHelper, mealTime);
 
@@ -251,28 +212,32 @@ public class ImprovedMenuActivity extends AppCompatActivity {
             tvMenuSummary.setText("No menu available");
         } else {
             showNoDataMessage(false);
-            // This setStations call will now trigger the adapter to use the favorites
             stationAdapter.setStations(stations);
             updateMenuSummary(stations);
         }
     }
 
     private List<MenuStation> getStationsFromDatabase(MenuDatabaseHelper dbHelper, String mealTime) {
+        // Try to get station-based menu data
         Map<String, List<String>> stationItems = dbHelper.getStationMenuItemsForHall(hallName, mealTime);
+
         List<MenuStation> stations = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : stationItems.entrySet()) {
             MenuStation station = new MenuStation(entry.getKey(), entry.getValue());
             stations.add(station);
         }
 
+        // If no dynamic data, fall back to regular menu items
         if (stations.isEmpty()) {
             Map<String, MenuStation> stationMap = new HashMap<>();
             List<MenuItem> items = dbHelper.getDynamicMenuItemsForHall(hallName, mealTime);
+
             for (MenuItem item : items) {
                 String stationName = item.getCategory();
                 if (stationName == null || stationName.isEmpty()) {
                     stationName = "General";
                 }
+
                 if (!stationMap.containsKey(stationName)) {
                     stationMap.put(stationName, new MenuStation(stationName));
                 }
@@ -280,6 +245,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
             }
             stations = new ArrayList<>(stationMap.values());
         }
+
         return stations;
     }
 
@@ -289,7 +255,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
             totalItems += station.getItemCount();
         }
         tvMenuSummary.setText(String.format("%d stations • %d items",
-                stations.size(), totalItems));
+                                           stations.size(), totalItems));
     }
 
     private void showNoDataMessage(boolean show) {
@@ -310,11 +276,14 @@ public class ImprovedMenuActivity extends AppCompatActivity {
     }
 
     private void showSeatingOptions() {
+        // TODO: Implement real-time seating availability checking
+        // For now, this is a placeholder for future functionality
         Toast.makeText(this, "Seating options coming soon for " + hallName + "!",
-                Toast.LENGTH_SHORT).show();
+                     Toast.LENGTH_SHORT).show();
     }
 
     private void showDatePicker() {
+        // Create date picker with current selected date
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select Menu Date")
                 .setSelection(selectedDate.getTime())
@@ -325,6 +294,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
             updateDateButtonText();
             updateMenuDateDisplay();
 
+            // Log date selection analytics
             if (firebaseManager != null) {
                 Bundle params = new Bundle();
                 params.putString("hall_name", hallName);
@@ -334,13 +304,8 @@ public class ImprovedMenuActivity extends AppCompatActivity {
                 firebaseManager.logEvent("date_selected", params);
             }
 
-            // --- UPDATED ---
-            // Must re-fetch favorites for the new date
-            if (currentUser != null) {
-                fetchUserFavorites(currentUser.getUid());
-            } else {
-                loadMenuForMealTime(currentMealTime);
-            }
+            // Load menu for the new date
+            loadMenuForMealTime(currentMealTime);
             fetchMenuForSelectedDate();
         });
 
@@ -351,12 +316,13 @@ public class ImprovedMenuActivity extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("MMM d", Locale.US);
         String dateText = formatter.format(selectedDate);
 
+        // Check if it's today
         Calendar today = Calendar.getInstance();
         Calendar selected = Calendar.getInstance();
         selected.setTime(selectedDate);
 
         if (today.get(Calendar.YEAR) == selected.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == selected.get(Calendar.DAY_OF_YEAR)) {
+            today.get(Calendar.DAY_OF_YEAR) == selected.get(Calendar.DAY_OF_YEAR)) {
             btnSelectDate.setText("Today");
         } else {
             btnSelectDate.setText(dateText);
@@ -372,6 +338,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
         if (!isLoadingMenu) {
             isLoadingMenu = true;
             progressBar.setVisibility(View.VISIBLE);
+            // Use the new method that supports date selection
             menuUpdateService.updateMenuForHallAndDate(hallName, selectedDate, true);
         }
     }
@@ -396,13 +363,13 @@ public class ImprovedMenuActivity extends AppCompatActivity {
                 startActivity(mapIntent);
             } else {
                 Uri webUri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination="
-                        + Uri.encode(hallAddress));
+                                     + Uri.encode(hallAddress));
                 Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
                 startActivity(webIntent);
             }
         } else {
             Toast.makeText(this, "Address not found for " + hallName,
-                    Toast.LENGTH_SHORT).show();
+                         Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.core.content.ContextCompat;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Account settings page
  */
@@ -174,7 +175,7 @@ public class AccountActivity extends AppCompatActivity {
         TextView back = new TextView(this);
         back.setId(View.generateViewId());
         back.setText(label);
-        back.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+        back.setTextColor(getResources().getColor(android.R.color.white));
         back.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         back.setTypeface(back.getTypeface(), Typeface.BOLD);
 
