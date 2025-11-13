@@ -24,6 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class ImprovedMenuActivity extends AppCompatActivity {
 
@@ -50,6 +55,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
 
     // Firebase
     private FirebaseManager firebaseManager;
+    private java.util.Set<String> userFavorites = new java.util.HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,7 @@ public class ImprovedMenuActivity extends AppCompatActivity {
         initializeViews();
         setupTabLayout();
         setupRecyclerView();
+        loadUserFavorites();
         setupClickListeners();
         initializeServices();
 
@@ -166,6 +173,32 @@ public class ImprovedMenuActivity extends AppCompatActivity {
         });
     }
 
+    private void loadUserFavorites() {
+        FirebaseUser user = (firebaseManager != null && firebaseManager.getAuth() != null)
+                ? firebaseManager.getAuth().getCurrentUser()
+                : null;
+
+        if (user != null) {
+            FirebaseFirestore.getInstance()
+                    .collection("users").document(user.getUid())
+                    .collection("favorites")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            userFavorites.clear();
+                            for (com.google.firebase.firestore.QueryDocumentSnapshot document : task.getResult()) {
+                                userFavorites.add(document.getId()); // Add item name to the set
+                            }
+                            // Pass the favorites list to the adapter
+                            if (stationAdapter != null) {
+                                stationAdapter.setUserFavorites(userFavorites);
+                            }
+                        } else {
+                            android.util.Log.w("Favorites", "Failed to load user favorites.", task.getException());
+                        }
+                    });
+        }
+    }
     private void updateFabIcon() {
         if (stationAdapter.areAllExpanded()) {
             fabExpandCollapse.setImageResource(android.R.drawable.arrow_up_float);

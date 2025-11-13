@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.example.myapplication.MenuCache;
+
 
 /**
  * MenuActivity - Displays dining hall menu with meal time selection
@@ -292,16 +294,36 @@ public class MenuActivity extends AppCompatActivity {
      * @param mealTime The meal time to load (Breakfast, Lunch, or Dinner)
      */
     private void loadMenuForMealTime(String mealTime) {
-        // Try to load dynamic menu first, fall back to static menu if not available
+        // 1) Try to load dynamic menu from DB first
         List<MenuItem> menuItems = dbHelper.getDynamicMenuItemsForHall(hallName, mealTime);
 
-        if (menuItems.isEmpty() && !isLoadingMenu) {
-            // No dynamic menu available, show a message
+        if (!menuItems.isEmpty()) {
+            // We have data -> display it
+            menuAdapter.updateMenuItems(menuItems);
+
+            // 2) Save a JSON cache for offline fallback (do IO off main thread)
+            new Thread(() -> MenuCache.saveMenu(
+                    MenuActivity.this, hallName, mealTime, menuItems)).start();
+
+            return;
+        }
+
+        // No DB rows yet -> If not already fetching, let the user know we’re trying
+        if (!isLoadingMenu) {
             Toast.makeText(this, "Fetching live menu data...", Toast.LENGTH_SHORT).show();
         }
 
-        menuAdapter.updateMenuItems(menuItems);
+        // 3) Fallback to local JSON cache if available
+        List<MenuItem> cached = MenuCache.loadMenu(this, hallName, mealTime);
+        if (cached != null && !cached.isEmpty()) {
+            Toast.makeText(this, "Offline: showing cached menu", Toast.LENGTH_SHORT).show();
+            menuAdapter.updateMenuItems(cached);
+        } else {
+            // Nothing to show yet; keep adapter empty (or show a placeholder)
+            menuAdapter.updateMenuItems(menuItems); // remains empty list
+        }
     }
+
 
     /**
      * Fetches the latest menu data from MSU website

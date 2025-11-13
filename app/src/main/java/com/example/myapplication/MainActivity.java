@@ -94,6 +94,35 @@ public class MainActivity extends AppCompatActivity {
     // Debug flag - set to false to disable reorganization temporarily
     private static final boolean ENABLE_LOCATION_REORGANIZATION = true;
 
+    private static final String PREFS = "SpartySpreadsPrefs";
+    private TextView txtNearestHall;
+
+
+    /**
+     * Helper functions for local storage
+     */
+    private void saveLocalState(String nearestHall, Location loc) {
+        SharedPreferences sp = getSharedPreferences(PREFS, MODE_PRIVATE);
+        sp.edit()
+                .putString("last_nearest_hall", nearestHall)
+                .putLong("last_update_time", System.currentTimeMillis())
+                .putFloat("last_lat", (float) loc.getLatitude())
+                .putFloat("last_lon", (float) loc.getLongitude())
+                .putFloat("last_acc", loc.hasAccuracy() ? loc.getAccuracy() : -1f)
+                .apply();
+    }
+
+    private boolean restoreLocalStateIfAvailable() {
+        SharedPreferences sp = getSharedPreferences(PREFS, MODE_PRIVATE);
+        String lastHall = sp.getString("last_nearest_hall", null);
+        if (lastHall != null) {
+
+            txtNearestHall.setText("Showing last known location from local storage: " + lastHall + " (approximate)");
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Initializes the main activity and sets up dining hall click listeners
      */
@@ -141,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             scheduleLocationInitialization();
 
             android.util.Log.d("MainActivity", "Minimal onCreate completed successfully");
+
+            restoreLocalStateIfAvailable();
 
         } catch (Exception e) {
             android.util.Log.e("MainActivity", "Critical error in onCreate", e);
@@ -206,6 +237,9 @@ public class MainActivity extends AppCompatActivity {
      * Initializes UI components
      */
     private void initializeViews() {
+
+        txtNearestHall = findViewById(R.id.txtNearestHall);
+
         try {
             btnLogin = findViewById(R.id.btnLogin);
             android.util.Log.d("MainActivity", "Login button found: " + (btnLogin != null));
@@ -995,6 +1029,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             android.util.Log.d("SafeReorganize", "Closest hall: " + closestHall.getName());
+
+            // --- Persist last known nearest hall + location locally ---
+            try {
+                Location snap = new Location(LocationManager.PASSIVE_PROVIDER);
+                snap.setLatitude(userLatitude);
+                snap.setLongitude(userLongitude);
+                // If you have a computed distance threshold, you can set a rough accuracy; otherwise pick a sane default
+                snap.setAccuracy(50f);
+                saveLocalState(closestHall.getName(), snap);
+            } catch (Exception ignore) {}
 
             // Update the featured tile with the closest hall
             updateFeaturedHallContent(closestHall);

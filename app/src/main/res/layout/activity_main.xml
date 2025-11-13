@@ -35,6 +35,20 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/txtNearestHall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Determining nearest dining hall..."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:gravity="center"
+            />
+
         <ImageView
             android:id="@+id/imgSpartanLogo"
             android:layout_width="80dp"

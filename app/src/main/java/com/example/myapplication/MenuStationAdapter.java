@@ -12,13 +12,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class MenuStationAdapter extends RecyclerView.Adapter<MenuStationAdapter.StationViewHolder> {
     private List<MenuStation> stations;
     private boolean expandAll = false;
-
+    private Set<String> userFavorites = new HashSet<>();
     public MenuStationAdapter() {
         this.stations = new ArrayList<>();
+    }
+
+    public void setUserFavorites(Set<String> favorites) {
+        this.userFavorites = (favorites != null) ? favorites : new HashSet<>();
+        notifyDataSetChanged(); // Re-bind all visible viewholders
     }
 
     public void setStations(List<MenuStation> stations) {
@@ -90,7 +97,7 @@ public class MenuStationAdapter extends RecyclerView.Adapter<MenuStationAdapter.
             itemCount.setText(count + (count == 1 ? " item" : " items"));
 
             itemsAdapter.setItems(station.getItems());
-
+            itemsAdapter.setUserFavorites(userFavorites);
             updateExpandedState(station.isExpanded());
 
             stationHeader.setOnClickListener(v -> {
